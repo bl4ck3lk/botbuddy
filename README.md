@@ -7,6 +7,8 @@
 
 `source venv/bin/activate`
 
+`pip install --editable .`
+
 Create a `.env` file in `botbuddy/bot` with your Twitter credentials.
 The file should look like this:
 

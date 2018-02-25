@@ -2,6 +2,7 @@ import logging
 from pprint import pprint
 import re
 import random
+import time
 
 import tweepy
 
@@ -20,6 +21,8 @@ SPACE = re.compile(r'\s+')
 
 class Bot:
     def __init__(self):
+        assert all((CONSUMER_SECRET, CONSUMER_KEY, ACCESS_TOKEN, ACCESS_SECRET)),\
+            'Missing credentials'
         auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
         auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
         self._api = tweepy.API(auth)
@@ -35,9 +38,13 @@ class Bot:
             hashtag = f'#{hashtag}'
         since = get_n_days_ago(since)
         logger.info(f'Searching for hashtag "{hashtag}" since "{since}"...')
-        for tweet in tweepy.Cursor(
-                self._api.search, q=hashtag, since=since, lang=lang).items(limit):
-            yield tweet
+        tc = tweepy.Cursor(self._api.search, q=hashtag, since=since, lang=lang).items(limit)
+        try:
+            for tweet in tc:
+                yield tweet
+        except tweepy.error.TweepError as e:
+            logger.warning(f'Exception while querying Twitter: {e}')
+            time.sleep(60)  # often this happens when the api makes too many requests.
 
     def random_retweet(self, hashtag, since=1, lang='en'):
         tweets = [tweet for tweet in self.query_hashtag(
@@ -64,9 +71,3 @@ class Bot:
                     f'followers: {followers_count}, '
                     f'favorited: {fav_count}, retweeted: {retweet_count}')
         return True
-
-
-if __name__ == '__main__':
-    bot = Bot()
-    tweets = bot.random_retweet('#stevejobs')
-    print(tweets)

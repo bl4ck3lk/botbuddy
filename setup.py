@@ -25,5 +25,6 @@ setup(
         [console_scripts]
         random_retweet=botbuddy.main:random_retweet
         twitter_query=botbuddy.main:query_twitter
+        launch_bot=botbuddy.main:launch_bot
     ''',
 )
