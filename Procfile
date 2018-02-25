@@ -1,2 +1,1 @@
-web: launch_bot deeplearning -i 5
-
+worker: python deploy.py

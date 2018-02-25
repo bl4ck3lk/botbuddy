@@ -1,5 +1,4 @@
-click
-python-dotenv
-tweepy
-pipenv
-
+click==6.7
+pipenv==10.1.0
+python-dotenv==0.7.1
+tweepy==3.5.0
