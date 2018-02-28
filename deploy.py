@@ -1,9 +1,12 @@
 import os
 import time
 import random
+import logging
 
 from botbuddy.bot.bot import Bot
 from botbuddy.hashtags.hashtag import Hashtags
+
+logger = logging.getLogger(__name__)
 
 
 def launch_bot(hashtag_file, interval=5):
@@ -14,8 +17,10 @@ def launch_bot(hashtag_file, interval=5):
     bot = Bot()
     ht = Hashtags(hashtag_file)
     while True:
-        bot.random_retweet(random.choice(ht))
-        time.sleep(interval)
+        tweet = bot.random_retweet(random.choice(ht))
+        if tweet is not None:
+            logger.info(f'RETWEET: {tweet}')
+            time.sleep(interval)
 
 
-launch_bot('deeplearning', 15)
+launch_bot('deeplearning', 20)

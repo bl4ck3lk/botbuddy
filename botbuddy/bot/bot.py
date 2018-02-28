@@ -51,6 +51,9 @@ class Bot:
             hashtag, since=since, lang=lang, limit=1000)
                   if Bot.is_popular(tweet)]
         if tweets:
+            if len(tweets) > 20:
+                tweets.sort(key=lambda x: x.favorite_count)
+                tweets = tweets[:int(len(tweets)*0.3)]
             random_tweet = random.choice(tweets)
             self._api.retweet(random_tweet.id)
             return random_tweet
@@ -65,7 +68,7 @@ class Bot:
             return False
         fav_count = tweet.favorite_count
         retweet_count = tweet.retweet_count
-        if fav_count < 20 or retweet_count < 5:
+        if fav_count < 50 or retweet_count < 10:
             return False
         logger.info(f'Author: {tweet.author.screen_name}\n\t'
                     f'followers: {followers_count}, '

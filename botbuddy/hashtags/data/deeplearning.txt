@@ -1,5 +1,6 @@
 ai
 aiforgood
+artificialinteligence
 artificialintelligence
 blockchain
 chatbots
@@ -9,7 +10,10 @@ cybersecurity
 deeplearning
 fintech
 healthtech
+humanai
+HumanIntelligence
 keras
+MachineIntelligence
 machinelearning
 NaturalLanguageProcessing
 neuralnetwork
