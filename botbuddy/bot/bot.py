@@ -65,7 +65,7 @@ class Bot:
             return False
         fav_count = tweet.favorite_count
         retweet_count = tweet.retweet_count
-        if fav_count < 1 or retweet_count < 1:
+        if fav_count < 20 or retweet_count < 5:
             return False
         logger.info(f'Author: {tweet.author.screen_name}\n\t'
                     f'followers: {followers_count}, '
