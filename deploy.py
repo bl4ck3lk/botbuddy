@@ -18,4 +18,4 @@ def launch_bot(hashtag_file, interval=5):
         time.sleep(interval)
 
 
-launch_bot('deeplearning', 25)
+launch_bot('deeplearning', 15)

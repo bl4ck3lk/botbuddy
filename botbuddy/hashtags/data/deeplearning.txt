@@ -1,4 +1,5 @@
 ai
+aiforgood
 artificialintelligence
 blockchain
 chatbots
@@ -13,6 +14,5 @@ machinelearning
 NaturalLanguageProcessing
 neuralnetwork
 neuralnetworks
-nlp
 robotics
 tensorflow
