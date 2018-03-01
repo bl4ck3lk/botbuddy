@@ -44,18 +44,27 @@ class Bot:
                 yield tweet
         except tweepy.error.TweepError as e:
             logger.warning(f'Exception while querying Twitter: {e}')
-            time.sleep(60)  # often this happens when the api makes too many requests.
+            time.sleep(960)  # often this happens when the api makes too many requests.
 
     def random_retweet(self, hashtag, since=1, lang='en'):
         tweets = [tweet for tweet in self.query_hashtag(
-            hashtag, since=since, lang=lang, limit=1000)
+            hashtag, since=since, lang=lang, limit=500)
                   if Bot.is_popular(tweet)]
         if tweets:
-            if len(tweets) > 20:
+            if len(tweets) > 50:
                 tweets.sort(key=lambda x: x.favorite_count)
-                tweets = tweets[:int(len(tweets)*0.3)]
+                tweets = tweets[int(len(tweets)*0.7):]
             random_tweet = random.choice(tweets)
-            self._api.retweet(random_tweet.id)
+            try:
+                self._api.retweet(random_tweet.id)
+            except tweepy.error.TweepError as e:
+                logger.error(f'{e}')
+                if e[0].get('code') == 327:
+                    try:
+                        random_tweet = random.choice(tweets)
+                        self._api.retweet(random_tweet.id)
+                    except:
+                        pass
             return random_tweet
 
     @staticmethod
@@ -68,7 +77,7 @@ class Bot:
             return False
         fav_count = tweet.favorite_count
         retweet_count = tweet.retweet_count
-        if fav_count < 50 or retweet_count < 10:
+        if fav_count < 10 or retweet_count < 10:
             return False
         logger.info(f'Author: {tweet.author.screen_name}\n\t'
                     f'followers: {followers_count}, '
